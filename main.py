@@ -8,46 +8,48 @@ import cv2
 
 app = Flask(__name__)
 
-gcp_key_json = os.environ['gcp_key']
+gcp_key_json = os.environ["gcp_key"]
 credentials = service_account.Credentials.from_service_account_info(
-  json.loads(gcp_key_json))
+    json.loads(gcp_key_json)
+)
 vision_client = vision.ImageAnnotatorClient(credentials=credentials)
 storage_client = storage.Client(credentials=credentials)
 
 
-@app.route('/')
+@app.route("/")
 def index():
-  return 'im a sussy poster'
+    return "im a sussy poster"
 
 
-@app.route('/analyze')
+@app.route("/analyze")
 def analyze():
-  imguri = request.args.get('imgUri')
-  output = {"objects": [], "colors": [], "properties": []}
+    imguri = request.args.get("imgUri")
+    output = {"objects": [], "colors": [], "properties": []}
 
-  blob = Blob.from_string(imguri, client=storage_client)
-  image_data = blob.download_as_bytes()
+    blob = Blob.from_string(imguri, client=storage_client)
+    image_data = blob.download_as_bytes()
 
-  cvimage = cv2.imgdecode(image_data)
-  cv2.imshow(cvimage)
-  cv2.waitKey(1)
+    cvimage = cv2.imgdecode(image_data)
+    cv2.imshow(cvimage)
+    cv2.waitKey(1)
 
-  image = vision.Image()
-  image.source.image_uri = imguri
+    image = vision.Image()
+    image.source.image_uri = imguri
 
-  objects = vision_client.object_localization(
-    image=image).localized_object_annotations
-  # objects = client.object_localization(
-  #   image=image).
+    objects = vision_client.object_localization(
+        image=image
+    ).localized_object_annotations
+    # objects = client.object_localization(
+    #   image=image).
 
-  print('Number of objects found: {}'.format(len(objects)))
-  for object_ in objects:
-    print('\n{} (confidence: {})'.format(object_.name, object_.score))
-    if (object_.score >= 0.5):
-      if object_.name not in output["objects"]:
-        output["objects"].append(object_.name)
+    print("Number of objects found: {}".format(len(objects)))
+    for object_ in objects:
+        print("\n{} (confidence: {})".format(object_.name, object_.score))
+        if object_.score >= 0.5:
+            if object_.name not in output["objects"]:
+                output["objects"].append(object_.name)
 
-  return json.dumps(output)
+    return json.dumps(output)
 
 
-app.run(host='0.0.0.0', port=80)
+app.run(host="0.0.0.0", port=80)
