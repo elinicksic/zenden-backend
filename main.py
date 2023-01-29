@@ -19,7 +19,6 @@ storage_client = storage.Client(credentials=credentials)
 with open("colors.json") as f:
   colors = json.load(f)
 
-
 @app.route("/")
 def index():
   return "Howdy!"
@@ -61,19 +60,26 @@ def analyze():
   print("Number of objects found: {}".format(len(objects)))
   for object_ in objects:
     print("\n{} (confidence: {})".format(object_.name, object_.score))
-    if object_.score >= 0.5:
+    if object_.score >= 0.1:
       if object_.name not in output["objects"]:
         output["objects"].append(object_.name)
+
+  response = vision_client.label_detection(image=image)
+  labels = response.label_annotations
+
+  print(labels)
 
   # Get dominant colors (image propeterties)
   output["colors"] = analyze_color(get_main_color(image))
 
   # Check required item scores
-  required_items = ["Plant", "Lighting"]
+  required_items = ["Plant"]
   required_items_score = 0
 
+  detected_labels = [x.description for x in labels if x.score > 0.3]
+
   for item in required_items:
-    if item in output["objects"]:
+    if item in output["objects"] or item in detected_labels:
       required_items_score = required_items_score + 1 / len(required_items)
       output["scoring"]["required_objects"][item] = True
     else:
@@ -92,20 +98,22 @@ def analyze():
   # Check lightness score
   rgb = tuple(int(output["colors"]["color"][i:i + 2], 16) for i in (0, 2, 4))
 
-  lightness = colorsys.rgb_to_hls(rgb[0], rgb[1], rgb[2])[1]
+  lightness = colorsys.rgb_to_hls(rgb[0], rgb[1], rgb[2])[2]
 
   lightness_score = min(lightness / wanted_lightness, 1)
+  lightness_score = max(lightness_score, 0)
+  
   output["scoring"]["lighting"]["score"] = lightness_score
 
   output["scoring"][
-    "total"] = required_items_score * 0.30 + color_score * 0.2 + lightness_score * 0.50
+    "total"] = required_items_score * 0.50 + color_score * 0.4 + lightness_score * 0.10
 
   # Reccomend a plant if it is a bright room with no plants
   if (lightness >= 60 and "Plant" not in output["objects"]):
     output["recommendations"].append("A plant can be a great addition to a room as it can help purify the air, add color and texture, and create a sense of calm.")
 
   # Recccomend a lamp if the room is dark
-  if (lightness <= 30 and "Lighting" not in output["objects"]):
+  if (lightness <= 30 and "Lighting" not in output["objects"]) and output["scoring"]["total"] < 0.7:
     output["recommendations"].append("Adding a lamp to a dark room can significantly improve the overall ambiance and functionality of the space by providing additional lighting and reducing eye strain.")
 
   # Reccomend a change of paint if it does not suite the room type
@@ -116,7 +124,7 @@ def analyze():
     elif (len(better_colors) == 1):
       output["recommendations"].append("Consider repainting the walls to " + better_colors[0])
     else:
-      output["recommendations"].append("Consider repainting the walls to be " + (", ".join(better_colors[:-1]))) + ", or " + better_colors[-1]
+      output["recommendations"].append("Consider repainting the walls to be " + ", ".join(better_colors[:-1]) + ", or " + better_colors[-1])
 
   print(output)
   
@@ -188,7 +196,7 @@ def url():
   # Check lightness score
   rgb = tuple(int(output["colors"]["color"][i:i + 2], 16) for i in (0, 2, 4))
 
-  lightness = colorsys.rgb_to_hls(rgb[0], rgb[1], rgb[2])[1]
+  lightness = colorsys.rgb_to_hls(rgb[0], rgb[1], rgb[2])[2]
 
   lightness_score = min(lightness / wanted_lightness, 1)
   output["scoring"]["lighting"]["score"] = lightness_score
