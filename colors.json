@@ -1,0 +1,122 @@
+[
+    {
+        "color":"7e110c",
+        "name":"Red",
+        "comments":"Red raises a room’s energy level. It has been shown to raise blood pressure, speed respiration, and increase heart rate.",
+        "moods":[
+            "energetic",
+            "anger"
+        ],
+        "rooms":[
+            "Living Room",
+            "Dining Room",
+            "Kitchen",
+            "Home Gym"
+        ]
+    },
+    {
+        "color":"0f1d4f",
+        "name":"Dark Blue",
+        "comments":"Dark Blue has a calming effect and is often used in bedrooms and bathrooms for its soothing properties. It can also make a room feel more spacious and serene.",
+        "moods":[
+            "relaxed",
+            "sophisticated"
+        ],
+        "rooms":[
+            "Bedroom",
+            "Bathroom",
+            "Home Office",
+            "Library"
+        ]
+    },
+    {
+        "color":"f2c924",
+        "name":"Yellow",
+        "comments":"Yellow is a cheerful and sunny color that can brighten up any room. It is often used in kitchens and bathrooms for its ability to create a warm and inviting atmosphere.",
+        "moods":[
+            "happy",
+            "energetic"
+        ],
+        "rooms":[
+            "Kitchen",
+            "Bathroom",
+            "Living Room",
+            "Sunroom"
+        ]
+    },
+    {
+        "color":"3a3a3a",
+        "name":"Gray",
+        "comments":"Gray is a neutral color that can create a sense of calm and balance in a room. It is often used as a backdrop for bolder, more colorful accents.",
+        "moods":[
+            "neutral",
+            "elegant"
+        ],
+        "rooms":[
+            "Living Room",
+            "Bedroom",
+            "Home Office",
+            "Dining Room"
+        ]
+    },
+    {
+        "color":"6f1e51",
+        "name":"Purple",
+        "comments":"Purple is often associated with luxury and royalty. It can add a sense of richness and elegance to a room. It is often used in bedrooms and bathrooms for its calming effect.",
+        "moods":[
+            "luxurious",
+            "sophisticated"
+        ],
+        "rooms":[
+            "Bedroom",
+            "Bathroom",
+            "Library",
+            "Dining Room"
+        ]
+    },
+    {
+        "color":"2f6d31",
+        "name":"Green",
+        "comments":"Green is the color of nature and is often used in living rooms and bedrooms for its calming effect. It can also be used to create a sense of balance and harmony in a room.",
+        "moods":[
+            "relaxed",
+            "balanced"
+        ],
+        "rooms":[
+            "Living Room",
+            "Bedroom",
+            "Home Office"
+        ]
+    },
+  {
+    "color": "ff8c00",
+    "name": "Orange",
+    "comments": "Orange is a warm and inviting color that can create a sense of enthusiasm and creativity. It is often used in living rooms, dining rooms, and kitchens for its ability to promote conversation and social interaction.",
+    "moods": [
+    "enthusiastic",
+    "creative"
+    ],
+    "rooms": [
+    "Living Room",
+    "Dining Room",
+    "Kitchen",
+    "Home Office"
+    ]
+},
+  {
+    "color": "ffffff",
+    "name": "White",
+    "comments": "White is a clean and crisp color that can create a sense of purity and simplicity. It is often used in bathrooms and bedrooms for its ability to create a serene and tranquil atmosphere. It can also make a room feel more spacious and open.",
+    "moods": [
+    "clean",
+    "pure"
+    ],
+    "rooms": [
+    "Bathroom",
+    "Bedroom",
+    "Kitchen",
+    "Home Office"
+    ]
+}
+
+]
